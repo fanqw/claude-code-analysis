@@ -1,4 +1,6 @@
+import { analysisLenses, codeFlows } from '@/lib/content'
 import { coverageStats, sourceGroups, sourceIndex } from '@/content/sourceIndex'
+import { SourceIndexBrowser } from '@/components/source-index-browser'
 import { PageShell, Section } from '@/components/ui'
 
 export default function SourcesPage() {
@@ -41,25 +43,32 @@ export default function SourcesPage() {
         </Section>
       </div>
 
-      <Section title="引用清单" eyebrow="Source References">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Label</th>
-              <th>Path</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sourceIndex.map(ref => (
-              <tr key={ref.path}>
-                <td>{ref.label}</td>
-                <td>{ref.path}</td>
-                <td>{ref.note ?? '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <Section title="新手推荐顺序" eyebrow="Start From These">
+        <div className="route-links">
+          <a href="/source?path=analysis%2F01-architecture-overview.md">1. architecture overview</a>
+          <a href="/source?path=src%2Fquery.ts&symbol=query">2. query.ts / query</a>
+          <a href="/source?path=analysis%2F04b-tool-call-implementation.md">3. tool call analysis</a>
+          <a href="/source?path=src%2Futils%2FsystemPrompt.ts&symbol=getSystemPrompt">4. systemPrompt.ts</a>
+          <a href="/source?path=analysis%2F04f-context-management.md">5. context analysis</a>
+        </div>
+      </Section>
+
+      <Section title="源码导航中心" eyebrow="Source References">
+        <SourceIndexBrowser codeFlows={codeFlows} refs={sourceIndex} />
+      </Section>
+
+      <Section title="analysis 视角总览" eyebrow="Analysis Dimensions">
+        <div className="analysis-board">
+          {analysisLenses.map(lens => (
+            <article className="analysis-card" key={lens.id}>
+              <div className="module-meta">
+                <span className="pill">{lens.dimension}</span>
+              </div>
+              <h3>{lens.title}</h3>
+              <p>{lens.summary}</p>
+            </article>
+          ))}
+        </div>
       </Section>
     </PageShell>
   )

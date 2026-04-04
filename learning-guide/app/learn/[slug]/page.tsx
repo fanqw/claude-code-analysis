@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { AnalysisLensBoard } from '@/components/analysis-lens-board'
+import { ModuleLayers } from '@/components/module-layers'
+import { PseudoCodeBlock } from '@/components/pseudo-code-block'
 import { ModuleVisitTracker } from '@/components/progress'
 import { InteractiveQuiz } from '@/components/quiz'
-import { getLearningModule, getLearningNeighbors, learningModules } from '@/lib/content'
+import { getAnalysisLens, getCodeFlow, getDiagram, getFlow, getLearningModule, getLearningNeighbors, learningModules } from '@/lib/content'
 import { PageShell, Section, SimpleList, StatusBadge } from '@/components/ui'
 
 export default async function LearnModulePage({
@@ -24,6 +27,16 @@ export default async function LearnModulePage({
   const relatedTitles = module.related
     .map(item => learningModules.find(entry => entry.slug === item))
     .filter(Boolean)
+  const conceptDiagram = getDiagram(module.conceptDiagramId)
+  const runtimeFlows = (module.runtimeFlowIds ?? [])
+    .map(id => getFlow(id))
+    .filter((flow): flow is NonNullable<typeof flow> => Boolean(flow))
+  const codeFlows = (module.codeFlowIds ?? [])
+    .map(id => getCodeFlow(id))
+    .filter((flow): flow is NonNullable<typeof flow> => Boolean(flow))
+  const analysisLenses = (module.analysisLensIds ?? [])
+    .map(id => getAnalysisLens(id))
+    .filter((lens): lens is NonNullable<typeof lens> => Boolean(lens))
 
   return (
     <PageShell>
@@ -40,6 +53,19 @@ export default async function LearnModulePage({
       </section>
 
       <div className="split">
+        <Section title="一句话结论" eyebrow="Takeaway">
+          <p>{module.plainExplanation}</p>
+        </Section>
+        <Section title="下一步应该做什么" eyebrow="Next Click">
+          <div className="route-links">
+            {next ? <Link href={`/learn/${next.slug}`}>继续到：{next.title}</Link> : null}
+            <Link href="/sources">看相关源码</Link>
+            <Link href="/map">回到阶段图</Link>
+          </div>
+        </Section>
+      </div>
+
+      <div className="split">
         <Section title="学完你应该会什么" eyebrow="Goal">
           <p>{module.goal}</p>
         </Section>
@@ -51,6 +77,38 @@ export default async function LearnModulePage({
       <Section title="为什么重要" eyebrow="Why It Matters">
         <SimpleList items={module.whyItMatters} />
       </Section>
+
+      {(conceptDiagram || runtimeFlows.length || codeFlows.length) ? (
+        <Section title="概念图 + 运行流 + 源码流" eyebrow="Three-Layer View">
+          <ModuleLayers codeFlows={codeFlows} concept={conceptDiagram} runtimeFlows={runtimeFlows} />
+        </Section>
+      ) : null}
+
+      <details className="details-panel">
+        <summary>切换到深入版：思维方式 + 伪代码</summary>
+        <div className="split details-body">
+          <Section title="这章应该怎么想" eyebrow="Mindset">
+            {module.mindset?.length ? <SimpleList items={module.mindset} /> : <p>当前模块暂无额外思维提示。</p>}
+          </Section>
+          <Section title="把它跑成脑内伪代码" eyebrow="Pseudo Walkthrough">
+            {module.pseudoCode?.length ? <PseudoCodeBlock steps={module.pseudoCode} title={`${module.title} mental run`} /> : <p>当前模块暂无伪代码。</p>}
+          </Section>
+        </div>
+      </details>
+
+      {analysisLenses.length ? (
+        <Section title="analysis 分析洞察" eyebrow="Analysis Lenses">
+          <AnalysisLensBoard lenses={analysisLenses.slice(0, 2)} />
+          {analysisLenses.length > 2 ? (
+            <details className="details-panel">
+              <summary>打开更多 analysis 视角</summary>
+              <div className="details-body">
+                <AnalysisLensBoard lenses={analysisLenses.slice(2)} />
+              </div>
+            </details>
+          ) : null}
+        </Section>
+      ) : null}
 
       <div className="split">
         <Section title="先修章节" eyebrow="Prerequisites">
@@ -114,24 +172,16 @@ export default async function LearnModulePage({
         </Section>
 
         <Section title="源码映射" eyebrow="Source References">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>来源</th>
-                <th>路径</th>
-                <th>说明</th>
-              </tr>
-            </thead>
-            <tbody>
-              {module.sourceRefs.map(ref => (
-                <tr key={ref.path}>
-                  <td>{ref.label}</td>
-                  <td>{ref.path}</td>
-                  <td>{ref.note ?? '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="route-links">
+            {module.sourceRefs.map(ref => {
+              const cleanPath = ref.path.replace(/^\.\.\//, '')
+              return (
+                <Link href={`/source?path=${encodeURIComponent(cleanPath)}`} key={ref.path}>
+                  {ref.label}
+                </Link>
+              )
+            })}
+          </div>
         </Section>
       </div>
 

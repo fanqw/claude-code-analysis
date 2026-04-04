@@ -37,6 +37,21 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: [],
     related: ['tool-call', 'prompt', 'session-storage'],
+    conceptDiagramId: 'architecture-overview',
+    runtimeFlowIds: ['runtime-overview'],
+    codeFlowIds: ['architecture-main-chain'],
+    analysisLensIds: ['architecture-systems-view', 'evidence-index-navigation'],
+    mindset: [
+      '先把它当成 agent runtime 看，而不是 CLI 工具。',
+      '先找主链 query，再看各子系统如何挂上去。',
+    ],
+    pseudoCode: [
+      'parse cli args',
+      'setup runtime + environment',
+      'mount repl or headless runner',
+      'enter query loop',
+      'delegate to tools / context / session / extensions',
+    ],
     projectMappings: [
       {
         targetLayer: 'Web Agent 总体架构',
@@ -107,6 +122,22 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['architecture'],
     related: ['prompt', 'sandbox', 'session-storage'],
+    conceptDiagramId: 'tool-runtime',
+    runtimeFlowIds: ['tool-call'],
+    codeFlowIds: ['tool-call-main-chain'],
+    analysisLensIds: ['tool-runtime-tradeoff', 'security-boundary-model', 'evidence-index-navigation'],
+    mindset: [
+      '不要把 Tool 学成“函数注册表”，要学成带治理的运行时协议。',
+      '每读一步都问自己：输入从哪来，结果回到哪里。',
+    ],
+    pseudoCode: [
+      'assistant_message -> collect tool_use blocks',
+      'group requests by concurrency/risk',
+      'for each tool_use:',
+      '  validate input + permission + hooks',
+      '  execute tool and normalize result',
+      'append tool_result to transcript',
+    ],
     projectMappings: [
       {
         targetLayer: 'Tool Registry',
@@ -176,6 +207,21 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['architecture'],
     related: ['context', 'tool-call', 'agent-memory'],
+    conceptDiagramId: 'prompt-runtime',
+    runtimeFlowIds: ['runtime-overview'],
+    codeFlowIds: ['prompt-main-chain'],
+    analysisLensIds: ['prompt-context-discipline', 'architecture-systems-view'],
+    mindset: [
+      '把 prompt 想成配置树，而不是一次性模板。',
+      '注意哪些段稳定、哪些段依赖运行时状态。',
+    ],
+    pseudoCode: [
+      'build static sections',
+      'merge dynamic sections and overrides',
+      'inject user/system context',
+      'apply cache boundaries',
+      'send effective prompt to query runtime',
+    ],
     projectMappings: [
       {
         targetLayer: 'Prompt Builder',
@@ -234,6 +280,20 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['architecture', 'prompt'],
     related: ['agent-memory', 'session-storage'],
+    conceptDiagramId: 'context-runtime',
+    runtimeFlowIds: ['runtime-overview'],
+    codeFlowIds: ['context-main-chain'],
+    analysisLensIds: ['prompt-context-discipline', 'evidence-index-navigation'],
+    mindset: [
+      '上下文是预算，不是历史记录备份箱。',
+      '每次 compact 后都要问：哪些状态必须显式补回。',
+    ],
+    pseudoCode: [
+      'measure available context budget',
+      'keep recent + high-value state',
+      'if near limit: compact transcript',
+      'reinject working state and resume query',
+    ],
     projectMappings: [
       {
         targetLayer: 'Context Manager',
@@ -293,6 +353,21 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['tool-call'],
     related: ['security', 'session-storage'],
+    conceptDiagramId: 'sandbox-runtime',
+    runtimeFlowIds: ['permissions-and-sandbox'],
+    codeFlowIds: ['sandbox-main-chain'],
+    analysisLensIds: ['security-boundary-model', 'tool-runtime-tradeoff'],
+    mindset: [
+      '先分清 allow/ask/deny，再看是否进入 sandbox。',
+      '安全边界要从资源视角看，不要只盯着 BashTool。',
+    ],
+    pseudoCode: [
+      'inspect tool intent and resource scope',
+      'resolve permission result',
+      'decide sandbox mode',
+      'execute inside allowed boundary',
+      'return result or denial',
+    ],
     projectMappings: [
       {
         targetLayer: 'Permission Layer',
@@ -351,6 +426,20 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['architecture', 'tool-call', 'context'],
     related: ['agent-memory', 'multi-agent'],
+    conceptDiagramId: 'session-runtime',
+    runtimeFlowIds: ['session-resume'],
+    codeFlowIds: ['session-main-chain'],
+    analysisLensIds: ['prompt-context-discipline', 'hidden-signals-and-observability'],
+    mindset: [
+      '把 session 当事件流，而不是聊天快照。',
+      '恢复会话时要关注运行态是否被真正重建。',
+    ],
+    pseudoCode: [
+      'append event to transcript',
+      're-attach metadata to tail',
+      'persist sidechain separately if needed',
+      'hydrate runtime from transcript when resuming',
+    ],
     projectMappings: [
       {
         targetLayer: 'Session Store',
@@ -525,6 +614,21 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['tool-call'],
     related: ['skills', 'sandbox'],
+    conceptDiagramId: 'mcp-runtime',
+    runtimeFlowIds: ['runtime-overview'],
+    codeFlowIds: ['mcp-main-chain'],
+    analysisLensIds: ['extension-ecosystem-view', 'security-boundary-model'],
+    mindset: [
+      '外部工具接入后也必须接受统一治理。',
+      '看 MCP 时不要只看连接，重点看认证和工具池融合。',
+    ],
+    pseudoCode: [
+      'connect to MCP server',
+      'perform auth + cache session',
+      'normalize remote tool definitions',
+      'merge tools into global pool',
+      'expose to runtime like built-in tools',
+    ],
     projectMappings: [
       {
         targetLayer: 'Extension Gateway',
@@ -583,6 +687,21 @@ export const learningModules: LearningModule[] = [
     ],
     prerequisites: ['tool-call', 'session-storage'],
     related: ['sandbox', 'agent-memory'],
+    conceptDiagramId: 'multi-agent-runtime',
+    runtimeFlowIds: ['multi-agent'],
+    codeFlowIds: ['multi-agent-main-chain'],
+    analysisLensIds: ['extension-ecosystem-view', 'competitive-product-judgment'],
+    mindset: [
+      '先辨认任务平面，再看 agent 身份差异。',
+      '多 Agent 最重要的问题是协作边界，而不是并发本身。',
+    ],
+    pseudoCode: [
+      'select agent mode for subtask',
+      'spawn agent context',
+      'exchange status through mailbox',
+      'bridge permission through leader if needed',
+      'merge task result back to main plane',
+    ],
     projectMappings: [
       {
         targetLayer: 'Advanced Coordination',

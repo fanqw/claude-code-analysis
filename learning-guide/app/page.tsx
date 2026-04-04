@@ -1,99 +1,143 @@
+import { AnalysisLensGrid, LearningRoadmap, ViewGallery } from '@/components/learning-structure'
 import Link from 'next/link'
 import { ProgressOverview } from '@/components/progress'
-import { Section, ModuleGrid, PageShell, SimpleList } from '@/components/ui'
-import { buildGuides, componentModules, learningFlows, learningModules } from '@/lib/content'
+import { PseudoCodeBlock } from '@/components/pseudo-code-block'
+import { StageRoadmap } from '@/components/stage-roadmap'
+import { StudyFlow } from '@/components/study-flow'
+import { ModuleGrid, PageShell, Section, SimpleList } from '@/components/ui'
 import { coverageStats } from '@/content/sourceIndex'
-import { getModulesByStatus, getRecommendedPath } from '@/lib/content'
+import { starterPseudoCode } from '@/content/stages'
+import { analysisLenses, buildGuides, componentModules, learningFlows, learningModules, learningStages } from '@/lib/content'
 
 export default function HomePage() {
-  const status = getModulesByStatus()
-  const recommended = getRecommendedPath()
-    .map(slug => learningModules.find(module => module.slug === slug))
-    .filter(Boolean)
-
   return (
     <PageShell>
-      <section className="hero">
+      <section className="hero hero-deep">
         <div className="hero-grid">
           <div>
-            <p className="eyebrow">Full Coverage Learning Project</p>
-            <h1>把 Claude Code 学成一张可落地的工程地图</h1>
+            <p className="eyebrow">Product Owner View</p>
+            <h1>先学主链，再学权衡，最后映射到你的项目</h1>
             <p>
-              这个学习站不是资料堆叠，而是把当前仓库里的源码分析重组成一条真正可学会的路径：
-              先看架构，再拆 Tool / Prompt / Context / Session / MCP / Sandbox / Multi-Agent，
-              最后映射到你自己的 Web 项目。
+              这个学习站现在按“阶段推进 + 多维分析 + 源码流转”来组织。你不需要再面对一堆散落概念，
+              而是先拿到递进路线、脑内流程和源码入口，再回头理解分析文档里的设计判断。
             </p>
+            <div className="route-links">
+              <Link href="/map">进入阶段学习图</Link>
+              <Link href="/learn/architecture">从架构起步</Link>
+              <Link href="/sources">进入源码导航中心</Link>
+            </div>
           </div>
           <div className="hero-stats">
             <div className="stat">
               <strong>{coverageStats.learningModules}</strong>
-              <p>主学习模块</p>
+              <p>核心学习模块</p>
             </div>
             <div className="stat">
-              <strong>{coverageStats.componentModules}</strong>
-              <p>组件分析模块</p>
+              <strong>{learningStages.length}</strong>
+              <p>递进阶段</p>
             </div>
             <div className="stat">
-              <strong>{coverageStats.flows}</strong>
-              <p>调用链演示</p>
+              <strong>{analysisLenses.length}</strong>
+              <p>analysis 学习视角</p>
             </div>
             <div className="stat">
               <strong>{coverageStats.sourceRefs}</strong>
-              <p>源码 / 文档引用</p>
+              <p>可回跳源码/文档</p>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="split">
-        <Section title="覆盖状态" eyebrow="Coverage Status">
-          <div className="pill-row">
-            <span className="pill">ready: {status.ready}</span>
-            <span className="pill">seeded: {status.seeded}</span>
-            <span className="pill">planned: {status.planned}</span>
-          </div>
-          <p className="muted">
-            当前版本已经把全量知识框架铺出来，核心模块优先做到可学，非核心模块保留入口并逐步补齐。
-          </p>
-        </Section>
-        <Section title="推荐路径" eyebrow="Recommended Path">
-          <SimpleList items={recommended.map(module => `${module?.title} · ${module?.estimatedMinutes} 分钟`)} />
-        </Section>
-      </div>
-
-      <div className="split">
-        <Section title="完成度快照" eyebrow="Completion Snapshot">
-          <SimpleList
-            items={[
-              `主学习模块已完成 ${coverageStats.readyLearningModules}/${coverageStats.learningModules}`,
-              `组件分析模块已完成 ${coverageStats.readyComponentModules}/${coverageStats.componentModules}`,
-              `调用链演示 ${coverageStats.flows} 条`,
-              `落地指南 ${coverageStats.buildGuides} 组`,
-            ]}
-          />
-        </Section>
-        <Section title="当前重点" eyebrow="Current Focus">
-          <SimpleList
-            items={[
-              '保持全量入口完整',
-              '优先把 seeded 模块提升为 ready',
-              '让复习与答题形成闭环',
-              '确保每次开发后都可构建、可访问、可验证',
-            ]}
-          />
-        </Section>
-      </div>
-
-      <Section title="学习进度" eyebrow="Progress">
-        <ProgressOverview totalModules={learningModules.length + componentModules.length} />
+      <Section title="学习主流程" eyebrow="Start Here">
+        <StudyFlow stages={learningStages} />
       </Section>
 
-      <Section title="主学习模块" eyebrow="Core Curriculum" actions={<Link href="/map">打开学习地图</Link>}>
-        <ModuleGrid items={learningModules} basePath="/learn" />
+      <Section title="新手起点" eyebrow="One Path First">
+        <div className="split">
+          <article className="stage-card">
+            <div className="stage-index">Step 1</div>
+            <h3>先从架构起步</h3>
+            <p>如果你只想用最稳的方式开始，先看架构，再顺着 Tool Call、Prompt、Context 走一遍。</p>
+            <div className="route-links">
+              <Link href="/learn/architecture">打开架构章节</Link>
+              <Link href="/map">查看完整阶段图</Link>
+            </div>
+          </article>
+          <article className="stage-card">
+            <div className="stage-index">Step 2</div>
+            <h3>之后再切到源码图</h3>
+            <p>当你能复述主流程后，再到 `/map` 的源码图和 `/sources` 的主链入口看真实文件。</p>
+            <div className="route-links">
+              <Link href="/sources">进入源码导航中心</Link>
+            </div>
+          </article>
+        </div>
+      </Section>
+
+      <Section title="先建立脑内图像" eyebrow="Mind Map / Flow / Pseudo Code">
+        <ViewGallery />
       </Section>
 
       <div className="split">
-        <Section title="组件分析区" eyebrow="UI / Control Plane">
+        <Section title="为什么这次更容易学" eyebrow="Learning Contract">
+          <SimpleList
+            items={[
+              '每章先看概念图，再看运行流，再切源码模式。',
+              '每个核心专题都带 analysis 洞察，不再只剩源码和定义。',
+              '学习图按阶段推进，不再把所有模块平铺成一堵墙。',
+              '增加伪代码和思维导图式表达，帮助你形成脑内模型。',
+            ]}
+          />
+        </Section>
+        <Section title="先跑一遍脑内主链" eyebrow="Pseudo Code">
+          <PseudoCodeBlock title="Claude Code mental loop" steps={starterPseudoCode} />
+        </Section>
+      </div>
+
+      <Section title="四阶段路线图" eyebrow="Stage Roadmap">
+        <StageRoadmap modules={learningModules} stages={learningStages} />
+      </Section>
+
+      <Section title="按阶段点击进入" eyebrow="Roadmap Cards">
+        <LearningRoadmap />
+      </Section>
+
+      <div className="split">
+        <Section title="多维分析入口" eyebrow="Analysis Views">
+          <AnalysisLensGrid />
+        </Section>
+
+        <Section title="学习进度" eyebrow="Progress">
+          <ProgressOverview totalModules={learningModules.length + componentModules.length} />
+        </Section>
+      </div>
+
+      <Section title="你接下来该看什么" eyebrow="Next Entry">
+        <div className="grid">
+          {learningStages.map(stage => (
+            <article className="module-card" key={stage.id}>
+              <div className="module-meta">
+                <span className="pill">{stage.title}</span>
+              </div>
+              <h3>{stage.outcome}</h3>
+              <p>{stage.whyNow}</p>
+              <div className="route-links">
+                {stage.modules.map(slug => {
+                  const module = learningModules.find(item => item.slug === slug)
+                  return module ? (
+                    <Link href={`/learn/${module.slug}`} key={module.slug}>
+                      {module.title}
+                    </Link>
+                  ) : null
+                })}
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <div className="split">
+        <Section title="组件控制面" eyebrow="UI / Control Plane">
           <ModuleGrid items={componentModules} basePath="/components" />
         </Section>
         <Section title="调用链演示" eyebrow="Interactive Flows">
@@ -101,7 +145,7 @@ export default function HomePage() {
         </Section>
       </div>
 
-      <Section title="你的项目怎么做" eyebrow="Build Your Own">
+      <Section title="落地到你的项目" eyebrow="Build Your Own">
         <ModuleGrid
           items={buildGuides.map(guide => ({
             ...guide,
@@ -109,27 +153,6 @@ export default function HomePage() {
           }))}
           basePath="/build"
         />
-      </Section>
-
-      <Section title="这一版已经具备什么" eyebrow="Current Prototype">
-        <div className="two-col-list">
-          <SimpleList
-            items={[
-              '全量章节入口',
-              '核心机制模块内容',
-              '学习地图和推荐顺序',
-              '调用链演示页',
-            ]}
-          />
-          <SimpleList
-            items={[
-              'Web 项目落地映射',
-              '术语页和来源索引',
-              '组件区占位与扩展位',
-              '可持续补章的内容模型',
-            ]}
-          />
-        </div>
       </Section>
     </PageShell>
   )

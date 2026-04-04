@@ -14,6 +14,24 @@ export type SourceReference = {
   note?: string
 }
 
+export type AnalysisLens = {
+  id: string
+  title: string
+  summary: string
+  guidingQuestion: string
+  dimension: '架构' | '安全' | '设计权衡' | '组件' | '竞争对比' | '隐藏能力' | '工程索引'
+  sourceRefs: SourceReference[]
+  linkedModules: string[]
+  takeaways: string[]
+}
+
+export type SourceJump = {
+  path: string
+  displayLabel: string
+  symbol?: string
+  note?: string
+}
+
 export type KnowledgePoint = {
   title: string
   summary: string
@@ -51,6 +69,12 @@ export type LearningModule = {
   related: string[]
   projectMappings: ProjectMapping[]
   quiz: QuizQuestion[]
+  conceptDiagramId?: string
+  runtimeFlowIds?: string[]
+  codeFlowIds?: string[]
+  analysisLensIds?: string[]
+  pseudoCode?: string[]
+  mindset?: string[]
 }
 
 export type LearningFlowStep = {
@@ -71,6 +95,60 @@ export type LearningFlow = {
   sourceRefs: SourceReference[]
 }
 
+export type DiagramNode = {
+  id: string
+  label: string
+  summary: string
+}
+
+export type DiagramConnection = {
+  from: string
+  to: string
+  label: string
+}
+
+export type DiagramBlock = {
+  id: string
+  title: string
+  summary: string
+  nodes: DiagramNode[]
+  connections: DiagramConnection[]
+}
+
+export type CodeAnchor = {
+  path: string
+  symbol?: string
+  lineHint?: string
+}
+
+export type CodeFlowNode = {
+  id: string
+  label: string
+  filePath: string
+  symbol?: string
+  role: string
+  summary: string
+  input: string
+  output: string
+  next: string
+}
+
+export type CodeFlowEdge = {
+  from: string
+  to: string
+  reason: string
+}
+
+export type CodeFlow = {
+  id: string
+  title: string
+  summary: string
+  granularity: 'module' | 'function'
+  nodes: CodeFlowNode[]
+  edges: CodeFlowEdge[]
+  popular?: boolean
+}
+
 export type BuildGuide = {
   slug: string
   title: string
@@ -87,4 +165,13 @@ export type BuildGuide = {
 export type GlossaryTerm = {
   term: string
   definition: string
+}
+
+export type LearningStage = {
+  id: string
+  title: string
+  outcome: string
+  modules: string[]
+  whyNow: string
+  nextStage?: string
 }

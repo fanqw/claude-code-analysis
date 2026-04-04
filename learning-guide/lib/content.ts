@@ -1,7 +1,11 @@
+import { analysisLenses, analysisLensesById } from '@/content/analysisLenses'
+import { codeFlows, codeFlowsById } from '@/content/codeFlows'
 import { buildGuides, buildGuidesBySlug } from '@/content/buildGuides'
 import { componentModules, componentModulesBySlug } from '@/content/componentModules'
+import { diagrams, diagramsById } from '@/content/diagrams'
 import { learningFlows, flowsBySlug } from '@/content/flows'
 import { learningModules, modulesBySlug } from '@/content/modules'
+import { learningStages } from '@/content/stages'
 
 export function getRecommendedPath() {
   return [
@@ -64,8 +68,20 @@ export function getFlow(slug: string) {
   return flowsBySlug[slug]
 }
 
+export function getDiagram(id?: string) {
+  return id ? diagramsById[id] : undefined
+}
+
+export function getCodeFlow(id?: string) {
+  return id ? codeFlowsById[id] : undefined
+}
+
+export function getAnalysisLens(id?: string) {
+  return id ? analysisLensesById[id] : undefined
+}
+
 export function getBuildGuide(slug: string) {
   return buildGuidesBySlug[slug]
 }
 
-export { buildGuides, componentModules, learningFlows, learningModules }
+export { analysisLenses, buildGuides, codeFlows, componentModules, diagrams, learningFlows, learningModules, learningStages }
