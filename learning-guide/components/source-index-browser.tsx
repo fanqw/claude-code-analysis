@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import type { CodeFlow, SourceReference } from '@/content/types'
-import { createSourceHref } from '@/lib/sourceLinks'
+import { createAnalysisHref, createSourceHref } from '@/lib/sourceLinks'
 
 export function SourceIndexBrowser({
   refs,
@@ -51,10 +51,10 @@ export function SourceIndexBrowser({
           全部
         </button>
         <button className={`mode-tab ${filter === 'analysis' ? 'mode-tab-active' : ''}`} onClick={() => setFilter('analysis')} type="button">
-          analysis
+          原文
         </button>
         <button className={`mode-tab ${filter === 'src' ? 'mode-tab-active' : ''}`} onClick={() => setFilter('src')} type="button">
-          src
+          源码
         </button>
       </div>
 
@@ -77,7 +77,7 @@ export function SourceIndexBrowser({
       <div className="route-links">
         {codeFlows.filter(flow => flow.popular).map(flow => (
           <Link href={`/source?path=${encodeURIComponent(flow.nodes[0].filePath)}${flow.nodes[0].symbol ? `&symbol=${encodeURIComponent(flow.nodes[0].symbol)}` : ''}`} key={flow.id}>
-            热门源码主链：{flow.title}
+            热门核验主链：{flow.title}
           </Link>
         ))}
       </div>
@@ -87,7 +87,7 @@ export function SourceIndexBrowser({
           <tr>
             <th>Label</th>
             <th>Path</th>
-            <th>Jump</th>
+            <th>核验入口</th>
           </tr>
         </thead>
         <tbody>
@@ -98,7 +98,9 @@ export function SourceIndexBrowser({
                 <td>{ref.label}</td>
                 <td>{ref.path}</td>
                 <td>
-                  <Link href={createSourceHref(cleanPath, undefined)}>打开源码</Link>
+                  <Link href={cleanPath.startsWith('analysis/') ? createAnalysisHref(cleanPath) : createSourceHref(cleanPath, undefined)}>
+                    {cleanPath.startsWith('analysis/') ? '打开原文' : '打开源码'}
+                  </Link>
                 </td>
               </tr>
             )

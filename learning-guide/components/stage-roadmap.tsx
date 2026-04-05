@@ -31,7 +31,7 @@ export function StageRoadmap({
                 </Link>
               ))}
             </div>
-            {stage.nextStage ? <p className="muted">完成后进入下一阶段，继续扩大系统理解半径。</p> : null}
+            {stage.nextStage ? <p className="muted">完成后进入下一阶段，继续主线学习。</p> : null}
           </article>
         )
       })}

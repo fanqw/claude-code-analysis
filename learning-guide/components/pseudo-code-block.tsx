@@ -12,7 +12,7 @@ export function PseudoCodeBlock({
   return (
     <div className="pseudo-shell">
       <div className="pseudo-head">
-        <span className="pill">Pseudo Code</span>
+        <span className="meta-chip">Pseudo Code</span>
         <strong>{title}</strong>
       </div>
       <pre className="pseudo-pre">

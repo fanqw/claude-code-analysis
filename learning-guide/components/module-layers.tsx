@@ -21,10 +21,10 @@ export function ModuleLayers({
     <div className="module-layers">
       <div className="pill-row">
         <button className={`mode-tab ${mode === 'learn' ? 'mode-tab-active' : ''}`} onClick={() => setMode('learn')} type="button">
-          学习模式
+          教程模式
         </button>
         <button className={`mode-tab ${mode === 'code' ? 'mode-tab-active' : ''}`} onClick={() => setMode('code')} type="button">
-          源码模式
+          核验模式
         </button>
       </div>
 

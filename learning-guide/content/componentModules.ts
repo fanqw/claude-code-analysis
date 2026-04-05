@@ -49,7 +49,7 @@ export const componentModules: LearningModule[] = [
       },
       {
         targetLayer: 'Learning Site Shell',
-        minimumImplementation: '首页、地图、章节页、复习页分别承担不同职责，不要一个页面塞所有内容。',
+        minimumImplementation: '首页、地图、章节页、源码阅读页分别承担不同职责，不要一个页面塞所有内容。',
         advancedImplementation: '引入专题布局、侧栏导航和内容元数据驱动的自动目录。',
         whenToDelay: '等章节数量稳定后再做更复杂的导航树。',
       },

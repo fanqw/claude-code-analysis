@@ -8,6 +8,16 @@ export function createSourceHref(path: string, symbol?: string) {
   return `/source?${params.toString()}`
 }
 
+export function createAnalysisHref(path: string) {
+  if (!path.startsWith('analysis/')) {
+    return createSourceHref(path)
+  }
+
+  const cleanPath = path.replace(/^analysis\//, '').replace(/\.md$/, '')
+  const segments = cleanPath.split('/')
+  return `/analysis/${segments.map(segment => encodeURIComponent(segment)).join('/')}`
+}
+
 export function createSourceJump(path: string, displayLabel: string, symbol?: string, note?: string): SourceJump {
   return {
     path,

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { componentModules, learningModules } from '@/lib/content'
-import { createSourceHref } from '@/lib/sourceLinks'
+import { createAnalysisHref } from '@/lib/sourceLinks'
 
 type Stage = {
   id: string
@@ -117,7 +117,7 @@ export function LearningRoadmap() {
       {stages.map((stage, index) => (
         <article className="roadmap-stage" key={stage.id}>
           <div className="roadmap-stage-head">
-            <span className="pill">{stage.label}</span>
+            <span className="meta-chip">{stage.label}</span>
             <span className="roadmap-stage-index">0{index + 1}</span>
           </div>
           <h3>{stage.title}</h3>
@@ -148,31 +148,31 @@ export function ViewGallery() {
       <article className="story-panel story-panel-large">
         <p className="eyebrow">Mind Map</p>
         <h3>系统如何分层</h3>
-        <div className="mind-map">
-          <div className="mind-root">
+        <div className="mind-map mind-map-sketch">
+          <div className="mind-root sketch-card">
             <strong>Claude Code</strong>
             <span>从入口到运行态，再到治理与扩展</span>
           </div>
           <div className="mind-branches">
-            <div className="mind-branch">
+            <div className="mind-branch sketch-card sketch-tilt-a">
               <strong>入口层</strong>
               <span>Architecture</span>
               <span>Tool Call</span>
               <span>Prompt</span>
             </div>
-            <div className="mind-branch">
+            <div className="mind-branch sketch-card sketch-tilt-b">
               <strong>运行层</strong>
               <span>Context</span>
               <span>Session</span>
               <span>Memory</span>
             </div>
-            <div className="mind-branch">
+            <div className="mind-branch sketch-card sketch-tilt-c">
               <strong>治理层</strong>
               <span>Sandbox</span>
               <span>MCP</span>
               <span>Skills</span>
             </div>
-            <div className="mind-branch">
+            <div className="mind-branch sketch-card sketch-tilt-d">
               <strong>协作层</strong>
               <span>Multi-Agent</span>
               <span>Components</span>
@@ -185,33 +185,20 @@ export function ViewGallery() {
       <article className="story-panel">
         <p className="eyebrow">Flow Chart</p>
         <h3>一次任务怎么流转</h3>
-        <div className="flow-rail">
-          <span>输入</span>
-          <span>Prompt 组装</span>
-          <span>query 主循环</span>
-          <span>tool_use</span>
-          <span>执行与权限</span>
-          <span>tool_result 回流</span>
+        <div className="sketch-flow">
+          <div className="sketch-flow-node sketch-tilt-a">输入</div>
+          <div className="sketch-flow-arrow">→</div>
+          <div className="sketch-flow-node sketch-tilt-b">Prompt 组装</div>
+          <div className="sketch-flow-arrow">→</div>
+          <div className="sketch-flow-node sketch-tilt-c">query 主循环</div>
+          <div className="sketch-flow-arrow">→</div>
+          <div className="sketch-flow-node sketch-tilt-d">tool_use</div>
+          <div className="sketch-flow-arrow">→</div>
+          <div className="sketch-flow-node sketch-tilt-a">执行与权限</div>
+          <div className="sketch-flow-arrow">→</div>
+          <div className="sketch-flow-node sketch-tilt-b">tool_result 回流</div>
         </div>
-      </article>
-
-      <article className="story-panel">
-        <p className="eyebrow">Pseudo Code</p>
-        <h3>核心循环长什么样</h3>
-        <pre className="pseudo-code">
-{`while (running) {
-  prompt = buildPrompt(context)
-  response = query(prompt)
-
-  if (response.tool_use) {
-    result = executeWithPermission(response.tool_use)
-    appendTranscript(result)
-    continue
-  }
-
-  renderAnswer(response)
-}`}
-        </pre>
+        <p className="muted">先用手绘流程建立顺序感，再点进源码流查看真实文件跳转。</p>
       </article>
     </div>
   )
@@ -227,7 +214,7 @@ export function AnalysisLensGrid() {
           <p>{lens.summary}</p>
           <div className="route-links">
             {lens.files.map(file => (
-              <Link href={createSourceHref(file.path.replace(/^\.\.\//, ''))} key={file.path}>
+              <Link href={createAnalysisHref(file.path.replace(/^\.\.\//, ''))} key={file.path}>
                 {file.label}
               </Link>
             ))}

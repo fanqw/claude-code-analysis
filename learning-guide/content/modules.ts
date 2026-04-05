@@ -8,14 +8,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '基础',
     estimatedMinutes: 25,
-    summary: '先建立 Claude Code 的六层结构认知，理解它为何是本地 agent 平台，而不是普通 CLI 聊天工具。',
-    goal: '学完后能画出 Claude Code 的主分层，并说清入口、初始化、REPL、执行内核、工具与扩展之间的关系。',
+    summary: '先建立 Claude Code 的系统骨架，知道它为什么是本地 agent runtime，而不只是命令行聊天工具。',
+    goal: '学完后你能画出 Claude Code 的主分层，并解释入口、初始化、REPL、执行内核、工具和扩展分别挂在哪一层。',
     plainExplanation:
-      'Claude Code 的本质是一套本地 agent runtime。它前面看起来像 CLI，里面其实是多入口、多层级、多能力协作的系统。只有先搞懂骨架，后面 Tool、Prompt、Memory、MCP 才不会碎成零件。',
+      'Claude Code 表面上像一个 CLI，内部其实是一套本地 agent runtime。先把系统骨架和主执行链看清，后面的 Tool、Prompt、Context、Memory 才不会像零散技巧。',
     whyItMatters: [
-      '它决定你后面看到的所有机制挂在哪一层。',
-      '它解释了为什么 Claude Code 能同时支持 CLI、REPL、SDK、remote 和多 agent。',
-      '它能直接映射到你自己的 Web Agent 项目分层。',
+      '它决定你后面看到的每个机制挂在哪一层。',
+      '它解释了为什么 Claude Code 能同时支持 CLI、REPL、远程模式和多 Agent。',
+      '它能直接映射到你自己的 Agent 项目分层。',
     ],
     keyPoints: [
       {
@@ -92,14 +92,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '基础',
     estimatedMinutes: 35,
-    summary: '理解 tool_use 从模型输出到实际执行再回流给下一轮对话的完整运行时链路。',
-    goal: '学完后能复述 Tool 抽象、工具池组装、调度分批、权限校验、执行结果回流这条主链。',
+    summary: '理解 tool_use 从模型输出到真实执行，再把结果送回下一轮推理的完整链路。',
+    goal: '学完后你能复述 Tool 抽象、工具池组装、调度分批、权限校验和结果回流这条主链。',
     plainExplanation:
-      'Claude Code 不是让模型“直接调用函数”，而是把工具调用拆成一条可校验、可并发控制、可审计、可回流的流水线。工具真正重要的不是函数本身，而是围绕它的一整套 runtime 约束。',
+      'Claude Code 不是让模型直接调函数，而是把工具调用拆成一条可校验、可调度、可审计、可回流的运行链。真正重要的不是函数本身，而是围绕它的一整套运行时约束。',
     whyItMatters: [
       '它是 Claude Code 作为 agent 的核心执行能力。',
-      '它直接决定你的项目要不要做工具 schema、权限、调度和结果规范化。',
-      '它把 prompt、permission、session storage 全串起来了。',
+      '它决定你的项目是否需要工具 schema、权限、调度和结果规范化。',
+      '它把 prompt、permission、session storage 串成了一条完整主链。',
     ],
     keyPoints: [
       {
@@ -178,14 +178,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '中等',
     estimatedMinutes: 35,
-    summary: '理解 Claude Code 为什么不是“写一个 system prompt”，而是构建 prompt runtime。',
-    goal: '学完后能讲清静态段、动态段、覆盖优先级、缓存段边界和专项 prompt 家族。',
+    summary: '理解 Claude Code 为什么不是写一个大 system prompt，而是在构建一个 prompt runtime。',
+    goal: '学完后你能讲清静态段、动态段、覆盖优先级、缓存边界和专项 prompt 家族。',
     plainExplanation:
-      'Claude Code 的 prompt 管理不是一次性拼字符串，而是像配置系统一样分层、分段、可缓存、可替换。这样既能稳定，又能在不同场景下重建正确上下文。',
+      'Claude Code 的 prompt 管理不是一次性拼字符串，而是像配置系统一样分层、分段、可缓存、可替换。这样既能保持稳定，又能在不同场景下重建正确上下文。',
     whyItMatters: [
       '它决定模型看到的环境说明、工具说明和动态上下文如何形成。',
-      '它直接影响长会话性能和 prompt 缓存命中率。',
-      '你的 Web 项目如果想长期可维护，Prompt Builder 必须抽出来。',
+      '它直接影响长会话性能和 prompt cache 命中率。',
+      '如果你的项目想长期可维护，Prompt Builder 必须独立出来。',
     ],
     keyPoints: [
       {
@@ -251,14 +251,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '中等',
     estimatedMinutes: 30,
-    summary: '理解 Claude Code 如何治理上下文额度、自动压缩和状态重建。',
-    goal: '学完后能说明 context budget、auto-compact、prompt cache 和 PTL fallback 的作用。',
+    summary: '理解 Claude Code 如何治理上下文预算、自动压缩和状态重建。',
+    goal: '学完后你能说明 context budget、auto-compact、prompt cache 和 PTL fallback 分别在解决什么问题。',
     plainExplanation:
-      'Claude Code 把上下文看成有限资源，而不是无限聊天记录。它会动态分配额度、压缩低价值内容、重建关键状态，确保长会话还能继续工作。',
+      'Claude Code 把上下文看成有限预算，而不是无限聊天记录。它会动态分配额度、压缩低价值内容、重建关键状态，确保长会话还能继续工作。',
     whyItMatters: [
-      '不做 context 管理，长会话很快会失控。',
+      '不做 context 管理，长会话很快就会失控。',
       '它和 prompt cache、session storage、memory 提取是联动的。',
-      'Web 项目中最容易被忽略，但最容易后期返工的就是这一层。',
+      '这是 Web Agent 项目里最容易被忽略、也最容易后期返工的一层。',
     ],
     keyPoints: [
       {
@@ -323,14 +323,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '中等',
     estimatedMinutes: 35,
-    summary: '理解 Claude Code 如何把权限规则和 sandbox 组合成实际执行边界。',
-    goal: '学完后能分清 permission system、sandbox、allowlist、denyWrite、网络限制和自动放行之间的关系。',
+    summary: '理解 Claude Code 如何把权限规则和 sandbox 组合成真实执行边界。',
+    goal: '学完后你能分清 permission system、sandbox、allowlist、denyWrite、网络限制和自动放行之间的关系。',
     plainExplanation:
-      'Claude Code 的安全边界不是单点开关。它同时依赖工具权限、路径规则、网络规则和运行时沙箱，多个机制叠加才构成真正的执行防线。',
+      'Claude Code 的安全边界不是单点开关。它同时依赖工具权限、路径规则、网络规则和运行时沙箱，多个机制叠加后才构成真正的执行防线。',
     whyItMatters: [
       '它决定 agent 能不能安全落地到本地系统。',
-      '它解释了为什么只做 ask/allow/deny 不够。',
-      'Web 项目即使没有本地 shell，也需要借鉴风险分级思路。',
+      '它解释了为什么只做 ask/allow/deny 还不够。',
+      'Web 项目即使没有本地 shell，也需要借鉴这种风险分级思路。',
     ],
     keyPoints: [
       {
@@ -397,14 +397,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '进阶',
     estimatedMinutes: 40,
-    summary: '理解 Claude Code 为什么把 transcript 当事件流日志，以及 resume 如何重建长期状态。',
-    goal: '学完后能说清 append-only transcript、metadata 重挂、subagent sidechain 和 hydrate 的作用。',
+    summary: '理解 Claude Code 为什么把 transcript 当事件流日志，以及 resume 如何靠它重建运行状态。',
+    goal: '学完后你能说清 append-only transcript、metadata 重挂、subagent sidechain 和 hydrate 的作用。',
     plainExplanation:
-      'Claude Code 不是简单保存聊天记录，而是保存可恢复的运行事件流。这样它才能在中断、resume、subagent 和长会话场景下恢复出比较完整的上下文。',
+      'Claude Code 不是简单保存聊天记录，而是保存可恢复的运行事件流。这样它才能在中断、resume、subagent 和长会话场景下恢复出比较完整的运行态。',
     whyItMatters: [
       '长会话治理和可恢复性高度依赖这一层。',
-      '它影响 UI 列表、resume 能力和多 agent sidechain。',
-      '你的 Web 项目只要要做“继续上次工作”，就绕不开 transcript 设计。',
+      '它影响 UI 列表、resume 能力和多 Agent sidechain。',
+      '只要你的项目要做“继续上次工作”，就绕不开 transcript 设计。',
     ],
     keyPoints: [
       {
@@ -469,14 +469,14 @@ export const learningModules: LearningModule[] = [
     status: 'ready',
     difficulty: '中等',
     estimatedMinutes: 30,
-    summary: '理解 Claude Code 的 memory 不只是“记住聊天内容”，而是多层级、可提取、可压缩的长期协作机制。',
-    goal: '学完后能分清 session memory、长期 memory、提取流程和它们与 compact 的关系。',
+    summary: '理解 Claude Code 的 memory 不只是记住聊天内容，而是多层级、可提取、可压缩的长期协作机制。',
+    goal: '学完后你能分清 session memory、长期 memory、提取流程，以及它们和 compact 的关系。',
     plainExplanation:
-      'Memory 在 Claude Code 里承担的是“把短期对话变成长期可用知识”的作用。它不是单独的一份笔记，而是与 session、prompt、compact 和工具执行联动的辅助系统。',
+      'Memory 在 Claude Code 里承担的是把短期对话变成长期可用知识的作用。它不是单独的一份笔记，而是与 session、prompt、compact 和工具执行联动的辅助系统。',
     whyItMatters: [
       '它是长期协作体验的重要来源。',
-      '它也带来隐私和治理代价。',
-      '自己的项目如果直接上 memory，很容易做重。',
+      '它也会带来隐私和治理成本。',
+      '自己的项目如果一开始就上自动 memory，很容易做重。',
     ],
     keyPoints: [
       {

@@ -519,6 +519,28 @@
 
 ### 12.2 视觉元素
 
+## 13. 多 PM 子代理协作规范
+
+为避免需求讨论失焦，学习站的后续产品方案默认遵循独立协作规范，而不是自由脑暴。
+
+相关文件：
+
+- `PM_AGENT_COLLABORATION_SPEC.md`
+- `PM_AGENT_ROUND_01_EXAMPLE.md`
+- `pm-prompts/ui-pm.md`
+- `pm-prompts/content-pm.md`
+- `pm-prompts/planning-pm.md`
+- `pm-prompts/shared-brief-template.md`
+- `pm-prompts/decision-ledger-template.md`
+- `pm-prompts/final-spec-template.md`
+
+默认约束：
+
+- 只讨论一个轮次问题
+- 最多 3 轮
+- 每页只允许一个主职责
+- 第 3 轮后必须由整体规划 PM 裁决并冻结
+
 - 学习地图
 - 分层架构图
 - 流程步骤图

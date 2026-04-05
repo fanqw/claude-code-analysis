@@ -7,6 +7,8 @@ import { learningFlows, flowsBySlug } from '@/content/flows'
 import { learningModules, modulesBySlug } from '@/content/modules'
 import { learningStages } from '@/content/stages'
 
+export const guideSnapshotLabel = '仓库快照：2026-04-05'
+
 export function getRecommendedPath() {
   return [
     'architecture',
@@ -58,6 +60,19 @@ export function getLearningNeighbors(slug: string) {
     previous: learningModules[index - 1],
     next: learningModules[index + 1],
   }
+}
+
+export function getLearningStageForModule(slug: string) {
+  return learningStages.find(stage => stage.modules.includes(slug))
+}
+
+export function getRecommendedPathIndex(slug: string) {
+  return getRecommendedPath().findIndex(item => item === slug)
+}
+
+export function getRecommendedPathLabel(slug: string) {
+  const index = getRecommendedPathIndex(slug)
+  return index === -1 ? undefined : `主线第 ${index + 1} 步`
 }
 
 export function getComponentModule(slug: string) {

@@ -1,5 +1,6 @@
 import { componentModules } from '@/content/componentModules'
 import { buildGuides } from '@/content/buildGuides'
+import { moduleEvidenceMap } from '@/content/evidenceMap'
 import { learningFlows } from '@/content/flows'
 import { learningModules } from '@/content/modules'
 
@@ -7,6 +8,10 @@ const allRefs = [
   ...learningModules.flatMap(module => module.sourceRefs),
   ...componentModules.flatMap(module => module.sourceRefs),
   ...learningFlows.flatMap(flow => flow.sourceRefs),
+  ...Object.values(moduleEvidenceMap).flatMap(entry => [
+    ...entry.analysis.map(link => ({ label: link.label, path: `../${link.targetPath}` })),
+    ...entry.source.map(link => ({ label: link.label, path: `../${link.targetPath}` })),
+  ]),
 ]
 
 export const sourceIndex = Array.from(

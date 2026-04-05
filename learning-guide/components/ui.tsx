@@ -83,3 +83,52 @@ export function SimpleList({
     </ul>
   )
 }
+
+export function Breadcrumbs({
+  items,
+}: {
+  items: {
+    label: string
+    href?: string
+  }[]
+}) {
+  return (
+    <div className="breadcrumbs" aria-label="Breadcrumb">
+      {items.map((item, index) => (
+        <span className="breadcrumb-item" key={`${item.label}-${index}`}>
+          {item.href ? <Link href={item.href}>{item.label}</Link> : <strong>{item.label}</strong>}
+          {index < items.length - 1 ? <span className="breadcrumb-sep">/</span> : null}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+export function TutorialHeader({
+  breadcrumbs,
+  stage,
+  pathLabel,
+  updatedLabel,
+  nextLabel,
+}: {
+  breadcrumbs: {
+    label: string
+    href?: string
+  }[]
+  stage?: string
+  pathLabel?: string
+  updatedLabel?: string
+  nextLabel?: string
+}) {
+  return (
+    <div className="tutorial-header">
+      <Breadcrumbs items={breadcrumbs} />
+      <div className="tutorial-meta">
+        {stage ? <span className="meta-chip">{stage}</span> : null}
+        {pathLabel ? <span className="meta-chip">{pathLabel}</span> : null}
+        {updatedLabel ? <span className="meta-chip">{updatedLabel}</span> : null}
+        {nextLabel ? <span className="meta-chip">{nextLabel}</span> : null}
+      </div>
+    </div>
+  )
+}

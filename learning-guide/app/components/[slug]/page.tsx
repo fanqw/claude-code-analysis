@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ModuleVisitTracker } from '@/components/progress'
-import { InteractiveQuiz } from '@/components/quiz'
 import { getComponentModule } from '@/lib/content'
+import { createAnalysisHref, createSourceHref } from '@/lib/sourceLinks'
 import { PageShell, Section, SimpleList, StatusBadge } from '@/components/ui'
 
 export default async function ComponentModulePage({
@@ -19,13 +18,12 @@ export default async function ComponentModulePage({
 
   return (
     <PageShell>
-      <ModuleVisitTracker slug={`components:${module.slug}`} />
       <section className="hero">
         <p className="eyebrow">Component Study</p>
         <div className="pill-row">
           <StatusBadge status={module.status} />
-          <span className="pill">{module.difficulty}</span>
-          <span className="pill">{module.estimatedMinutes} 分钟</span>
+          <span className="meta-chip">{module.difficulty}</span>
+          <span className="meta-chip">{module.estimatedMinutes} 分钟</span>
         </div>
         <h1>{module.title}</h1>
         <p>{module.summary}</p>
@@ -74,17 +72,21 @@ export default async function ComponentModulePage({
         </Section>
 
         <Section title="来源文档" eyebrow="Sources">
-          <SimpleList items={module.sourceRefs.map(ref => `${ref.label} · ${ref.path}`)} />
+          <div className="route-links">
+            {module.sourceRefs.map(ref => {
+              const cleanPath = ref.path.replace(/^\.\.\//, '')
+              const href = cleanPath.startsWith('analysis/')
+                ? createAnalysisHref(cleanPath)
+                : createSourceHref(cleanPath)
+              return (
+                <Link href={href} key={ref.path}>
+                  {ref.label}
+                </Link>
+              )
+            })}
+          </div>
         </Section>
       </div>
-
-      <Section title="自测题" eyebrow="Quiz">
-        {module.quiz.length ? (
-          <InteractiveQuiz moduleSlug={`components-${module.slug}`} questions={module.quiz} />
-        ) : (
-          <p>该模块当前还没有练习题，后续会继续补充。</p>
-        )}
-      </Section>
 
       <Section title="继续探索" eyebrow="Navigation">
         <div className="route-links">

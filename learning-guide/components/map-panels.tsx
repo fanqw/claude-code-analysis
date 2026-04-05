@@ -50,7 +50,7 @@ export function MapPanels({
           {codeFlows.map(flow => (
             <article className="module-card" key={flow.id}>
               <div className="module-meta">
-                <span className="pill">{flow.granularity === 'module' ? '模块级' : '函数级'}</span>
+                <span className="meta-chip">{flow.granularity === 'module' ? '模块级' : '函数级'}</span>
               </div>
               <h3>{flow.title}</h3>
               <p>{flow.summary}</p>

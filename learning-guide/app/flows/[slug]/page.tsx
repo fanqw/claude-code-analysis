@@ -32,7 +32,7 @@ export default async function FlowPage({
         <Section title="关联模块" eyebrow="Related Modules">
           <div className="pill-row">
             {flow.relatedModules.map(item => (
-              <span className="pill" key={item}>
+              <span className="meta-chip" key={item}>
                 {item}
               </span>
             ))}

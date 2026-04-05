@@ -32,6 +32,25 @@ export type SourceJump = {
   note?: string
 }
 
+export type EvidenceSource = {
+  id: string
+  kind: 'source' | 'analysis'
+  path: string
+  title: string
+  moduleSlugs: string[]
+  symbol?: string
+  sectionAnchor?: string
+  note?: string
+}
+
+export type EvidenceLink = {
+  label: string
+  targetPath: string
+  targetType: 'source' | 'analysis'
+  symbol?: string
+  reason: string
+}
+
 export type KnowledgePoint = {
   title: string
   summary: string
@@ -175,3 +194,34 @@ export type LearningStage = {
   whyNow: string
   nextStage?: string
 }
+
+export type ArchitectureNode = {
+  id: string
+  label: string
+  path?: string
+  role: string
+  summary: string
+  children?: string[]
+  relatedEvidence: EvidenceLink[]
+  relatedFlows?: string[]
+}
+
+export type AnalysisDocument = {
+  path: string
+  title: string
+  rawContent: string
+  headings: string[]
+  linkedModules: string[]
+  linkedSourceFiles: string[]
+}
+
+export type SourceDocument = {
+  path: string
+  language: string
+  rawContent: string
+  highlightLines?: number[]
+  symbol?: string
+  linkedAnalysisDocs: string[]
+}
+
+export type ReadingMode = 'guide' | 'compare' | 'raw'
