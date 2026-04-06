@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { CodeFlow, DiagramBlock, LearningFlow } from '@/content/types'
 import { CodeFlowView } from '@/components/code-flow'
 import { DiagramBlock as DiagramView } from '@/components/diagram-block'
+import { ExcalidrawFlow } from '@/components/excalidraw-flow'
 
 export function ModuleLayers({
   concept,
@@ -19,6 +20,9 @@ export function ModuleLayers({
 
   return (
     <div className="module-layers">
+      <div className="module-layers-intro">
+        <p className="muted">第一次阅读先看概念图和运行流。只有需要回到真实文件核验时，再切到源码模式。</p>
+      </div>
       <div className="pill-row">
         <button className={`mode-tab ${mode === 'learn' ? 'mode-tab-active' : ''}`} onClick={() => setMode('learn')} type="button">
           教程模式
@@ -33,7 +37,15 @@ export function ModuleLayers({
           {concept ? <DiagramView diagram={concept} /> : null}
           {runtimeFlows.map(flow => (
             <div className="flow-stack" key={flow.slug}>
-              <p className="muted">{flow.summary}</p>
+              <ExcalidrawFlow
+                eyebrow="Runtime Flow"
+                title={flow.title}
+                summary={flow.summary}
+                nodes={flow.steps.map(step => ({
+                  title: step.title,
+                  note: `${step.input} -> ${step.output}`,
+                }))}
+              />
               {flow.steps.map((step, index) => (
                 <article className="flow-step" key={`${flow.slug}-${step.title}`}>
                   <strong>

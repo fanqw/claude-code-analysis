@@ -6,6 +6,7 @@ type CardProps = PropsWithChildren<{
   eyebrow?: string
   actions?: ReactNode
   className?: string
+  id?: string
 }>
 
 export function PageShell({ children }: PropsWithChildren) {
@@ -17,10 +18,11 @@ export function Section({
   eyebrow,
   actions,
   className = '',
+  id,
   children,
 }: CardProps) {
   return (
-    <section className={`card ${className}`.trim()}>
+    <section className={`card ${className}`.trim()} id={id}>
       {(title || eyebrow || actions) && (
         <div className="card-head">
           <div>

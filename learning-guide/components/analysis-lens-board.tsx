@@ -40,25 +40,28 @@ export function AnalysisLensBoard({
               })}
             </div>
           </div>
-          <ul className="simple-list">
-            {lens.takeaways.map(item => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <div className="analysis-card-links">
-            {lens.sourceRefs.map(ref => (
-              <Link
-                href={
-                  ref.path.replace(/^\.\.\//, '').startsWith('analysis/')
-                    ? createAnalysisHref(ref.path.replace(/^\.\.\//, ''))
-                    : createSourceHref(ref.path.replace(/^\.\.\//, ''))
-                }
-                key={`${lens.id}-${ref.path}`}
-              >
-                {ref.label}
-              </Link>
-            ))}
-          </div>
+          <details className="analysis-details">
+            <summary>展开更多判断点</summary>
+            <ul className="simple-list">
+              {lens.takeaways.map(item => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="analysis-card-links">
+              {lens.sourceRefs.map(ref => (
+                <Link
+                  href={
+                    ref.path.replace(/^\.\.\//, '').startsWith('analysis/')
+                      ? createAnalysisHref(ref.path.replace(/^\.\.\//, ''))
+                      : createSourceHref(ref.path.replace(/^\.\.\//, ''))
+                  }
+                  key={`${lens.id}-${ref.path}`}
+                >
+                  {ref.label}
+                </Link>
+              ))}
+            </div>
+          </details>
         </article>
       ))}
     </div>

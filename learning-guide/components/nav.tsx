@@ -23,7 +23,12 @@ export function SiteHeader() {
       </Link>
       <nav className="site-nav">
         {navItems.map(item => (
-          <Link href={item.href} key={item.href} title={'title' in item ? item.title : undefined}>
+          <Link
+            className={`site-nav-link${'title' in item ? ' site-nav-link-stage' : ''}`}
+            href={item.href}
+            key={item.href}
+            title={'title' in item ? item.title : undefined}
+          >
             {item.label}
           </Link>
         ))}
@@ -40,10 +45,10 @@ export function SiteFooter() {
         <p>把章节先读通，再回到 analysis 原文和真实源码验证关键判断。</p>
       </div>
       <div className="site-footer-links">
-        <Link href="/map">学习地图</Link>
-        <Link href="/glossary">术语表</Link>
-        <Link href="/analysis">analysis 原文核验</Link>
-        <Link href="/sources">源码核验</Link>
+        <Link className="site-footer-link" href="/map">学习地图</Link>
+        <Link className="site-footer-link" href="/glossary">术语表</Link>
+        <Link className="site-footer-link" href="/analysis">analysis 原文核验</Link>
+        <Link className="site-footer-link" href="/sources">源码核验</Link>
       </div>
     </footer>
   )

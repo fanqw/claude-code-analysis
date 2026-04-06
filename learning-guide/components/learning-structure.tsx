@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ExcalidrawFlow } from '@/components/excalidraw-flow'
 import { componentModules, learningModules } from '@/lib/content'
 import { createAnalysisHref } from '@/lib/sourceLinks'
 
@@ -183,22 +184,19 @@ export function ViewGallery() {
       </article>
 
       <article className="story-panel">
-        <p className="eyebrow">Flow Chart</p>
-        <h3>一次任务怎么流转</h3>
-        <div className="sketch-flow">
-          <div className="sketch-flow-node sketch-tilt-a">输入</div>
-          <div className="sketch-flow-arrow">→</div>
-          <div className="sketch-flow-node sketch-tilt-b">Prompt 组装</div>
-          <div className="sketch-flow-arrow">→</div>
-          <div className="sketch-flow-node sketch-tilt-c">query 主循环</div>
-          <div className="sketch-flow-arrow">→</div>
-          <div className="sketch-flow-node sketch-tilt-d">tool_use</div>
-          <div className="sketch-flow-arrow">→</div>
-          <div className="sketch-flow-node sketch-tilt-a">执行与权限</div>
-          <div className="sketch-flow-arrow">→</div>
-          <div className="sketch-flow-node sketch-tilt-b">tool_result 回流</div>
-        </div>
-        <p className="muted">先用手绘流程建立顺序感，再点进源码流查看真实文件跳转。</p>
+        <ExcalidrawFlow
+          eyebrow="Excalidraw Flow"
+          title="一次任务怎么流转"
+          summary="先用手绘式流程建立顺序感，再点进章节里的源码流看真实文件跳转。"
+          nodes={[
+            { title: '输入', note: '用户发起任务' },
+            { title: 'Prompt 组装', note: '拼接系统上下文' },
+            { title: 'query 主循环', note: '进入统一执行内核' },
+            { title: 'tool_use', note: '模型请求工具' },
+            { title: '执行与权限', note: '审批并运行工具' },
+            { title: 'tool_result 回流', note: '结果送回下一轮' },
+          ]}
+        />
       </article>
     </div>
   )
